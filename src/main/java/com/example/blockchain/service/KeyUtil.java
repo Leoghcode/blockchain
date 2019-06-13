@@ -16,6 +16,31 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class KeyUtil {
+    public static String getSHA256Str(String text) {
+        String encodeText = "";
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(text.getBytes("UTF-8"));
+            encodeText = byte2Hex(messageDigest.digest());
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return encodeText;
+    }
+
+    private static String byte2Hex(byte[] bytes) {
+        StringBuilder stringBuilder = new StringBuilder();
+        String tmp;
+        for (byte aByte : bytes) {
+            tmp = Integer.toHexString(aByte & 0xFF);
+            if (tmp.length() == 1) {
+                stringBuilder.append("0");
+            }
+            stringBuilder.append(tmp);
+        }
+        return stringBuilder.toString();
+    }
+
     public static Map<String, String> getSHAKeys() {
         Map<String, String> hashMap = new HashMap<>();
         try {
@@ -32,7 +57,7 @@ public class KeyUtil {
             Base64.Encoder encoder = Base64.getEncoder();
             String publicKeyBase64 = encoder.encodeToString(hex2Bytes(publicKeyHex));
             String privateKey = bytes2Hex(ecPrivateKey.getEncoded());
-            hashMap.put("address", publicKeyBase64);
+            hashMap.put("public_key", publicKeyBase64);
             hashMap.put("private_key", privateKey);
 //            System.out.println(hashMap);
         } catch (NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {

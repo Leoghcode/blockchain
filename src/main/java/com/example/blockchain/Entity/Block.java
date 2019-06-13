@@ -1,22 +1,20 @@
 package com.example.blockchain.Entity;
 
 import com.alibaba.fastjson.JSON;
-
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import com.example.blockchain.service.KeyUtil;
 import java.util.List;
 
 public class Block {
     private int index;
-    private long timestamp;
-    private String previousHash;
     private String hash;
+    private String previousHash;
+    private long timestamp;
+    private String lastTransaction;
     private List transactions;
 
-    public Block(int index, long timestamp, List transactions, String previousHash) {
+    public Block(int index, List transactions, String previousHash) {
         this.index = index;
-        this.timestamp = timestamp;
+        this.timestamp = System.currentTimeMillis();
         this.transactions = transactions;
         this.previousHash = previousHash;
         this.hash = hash();
@@ -24,33 +22,8 @@ public class Block {
 
     private String hash() {
         String transStr = JSON.toJSONString(transactions);
-        String text = "" + index + timestamp + transStr + previousHash;
-        return getSHA256Str(text);
-    }
-
-    private String getSHA256Str(String text) {
-        String encodeText = "";
-        try {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(text.getBytes("UTF-8"));
-            encodeText = byte2Hex(messageDigest.digest());
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        return encodeText;
-    }
-
-    private String byte2Hex(byte[] bytes) {
-        StringBuffer stringBuffer = new StringBuffer();
-        String tmp = null;
-        for (byte aByte : bytes) {
-            tmp = Integer.toHexString(aByte & 0xFF);
-            if (tmp.length() == 1) {
-                stringBuffer.append("0");
-            }
-            stringBuffer.append(tmp);
-        }
-        return stringBuffer.toString();
+        String text = "" + index + previousHash + timestamp + lastTransaction + transStr;
+        return KeyUtil.getSHA256Str(text);
     }
 
     public int getIndex() {
@@ -91,5 +64,13 @@ public class Block {
 
     public void setTransactions(List transactions) {
         this.transactions = transactions;
+    }
+
+    public String getLastTransaction() {
+        return lastTransaction;
+    }
+
+    public void setLastTransaction(String lastTransaction) {
+        this.lastTransaction = lastTransaction;
     }
 }

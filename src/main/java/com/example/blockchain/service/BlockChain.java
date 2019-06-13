@@ -13,17 +13,16 @@ public class BlockChain {
     private ArrayList<Block> chain;
     private ArrayList<Transaction> transactions;
     public BlockChain() {
-        chain = new ArrayList<Block>();
-        transactions = new ArrayList<Transaction>();
+        chain = new ArrayList<>();
+        transactions = new ArrayList<>();
         makeInitialBlock();
     }
     public void makeInitialBlock() {
         String address = "node111";
         transactions.add(new Transaction(address, address, "initial block"));
         int index = 0;
-        long timestamp = new Date().getTime();
         String previousHash = "0";
-        Block initialBlock = new Block(index, timestamp, transactions, previousHash);
+        Block initialBlock = new Block(index, transactions, previousHash);
         chain.add(initialBlock);
         // 清空交易缓冲区
         transactions = new ArrayList<>();
@@ -32,9 +31,8 @@ public class BlockChain {
     public void addBlock() {
         Block lastBlock = chain.get(chain.size() - 1);
         int index = lastBlock.getIndex() + 1;
-        long timestamp = new Date().getTime();
         String previousHash = lastBlock.getHash();
-        Block newBlock = new Block(index, timestamp, transactions, previousHash);
+        Block newBlock = new Block(index, transactions, previousHash);
         chain.add(newBlock);
         // 清空交易缓冲区
         transactions = new ArrayList<>();
