@@ -3,6 +3,8 @@ package com.example.blockchain.Entity;
 
 import com.example.blockchain.service.KeyUtil;
 
+import java.util.Random;
+
 public class Item {
     private String hash;
     private String name;
@@ -11,13 +13,20 @@ public class Item {
     private long create_date;
     private boolean is_qualified;
 
-    public Item (String name, int volumn, String source) {
+    public Item() {
+        this.create_date = System.currentTimeMillis();
+        this.hash = KeyUtil.getSHA256Str(name + source + String.valueOf(volume)
+                + String.valueOf(create_date) + new Random());
+    }
+
+    public Item (String name, int volume, String source) {
         this.name = name;
         this.source = source;
         this.create_date = System.currentTimeMillis();
         this.is_qualified = false;
-        this.volume = volumn;
-        this.hash = KeyUtil.getSHA256Str(name + source + String.valueOf(volumn) + String.valueOf(create_date));
+        this.volume = volume;
+        this.hash = KeyUtil.getSHA256Str(name + source + String.valueOf(volume)
+                + String.valueOf(create_date) + new Random());
     }
 
     public String getHash() {
@@ -36,12 +45,12 @@ public class Item {
         this.name = name;
     }
 
-    public int getVolumn() {
+    public int getVolume() {
         return volume;
     }
 
-    public void setVolumn(int volumn) {
-        this.volume = volumn;
+    public void setVolume(int volume) {
+        this.volume = volume;
     }
 
     public long getCreate_date() {

@@ -1,14 +1,28 @@
 package com.example.blockchain.Entity;
 
 public class Transaction {
-    String from;    // from address
-    String to;      // to address
-    String item;    // item hash
+    private String from;    // from address
+    private String to;      // to address
+    private String item;    // item hash
+    private String type;
+    private boolean multiSign;
+    private int value;
 
-    public Transaction(String from, String to, String item) {
+    public Transaction() {
+        this("", "", "", "", false);
+    }
+
+    public Transaction(String from, String to, String type, String item, boolean multiSign) {
+        this(from, to, type, item, multiSign, 0);
+    }
+
+    public Transaction(String from, String to, String type, String item, boolean multiSign, int value) {
         this.from = from;
         this.to = to;
+        this.type = type;
         this.item = item;
+        this.multiSign = multiSign;
+        this.value = value;
     }
 
     public String getFrom() {
@@ -33,5 +47,21 @@ public class Transaction {
 
     public void setItem(String item) {
         this.item = item;
+    }
+
+    public boolean isMultiSign() {
+        return multiSign;
+    }
+
+    public void setMultiSign(boolean multiSign) {
+        this.multiSign = multiSign;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
     }
 }

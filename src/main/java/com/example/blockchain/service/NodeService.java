@@ -2,22 +2,16 @@ package com.example.blockchain.service;
 
 import com.alibaba.fastjson.JSON;
 import com.example.blockchain.Entity.Node;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
-import org.w3c.dom.NodeList;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class NodeService {
     private static final String filePath = ResourceUtils.CLASSPATH_URL_PREFIX + "hosts";
-    private static List<Node> nodeList = loadProperties();
+//    private static List<Node> nodeList = loadProperties();
+    private static List<Node> nodeList = new ArrayList<>();
 
     private static List<Node> loadProperties() {
         synchronized (filePath) {
@@ -28,8 +22,8 @@ public class NodeService {
                 String line;
                 while ((line = bf.readLine()) != null) {
                     String[] splits = line.split(" ");
-                    if (splits.length == 3) {
-                        nodeList.add(new Node(splits[0], Integer.valueOf(splits[1]), splits[2]));
+                    if (splits.length == 4) {
+                        nodeList.add(new Node(splits[0], Integer.valueOf(splits[1]), splits[2], splits[3]));
                     }
                 }
                 bf.close();
@@ -57,7 +51,7 @@ public class NodeService {
         }
     }
 
-    public boolean addNode(String address, int port, String name) {
+    public boolean addNode(String address, int port, String name, String key) {
         for (Node node : nodeList) {
             if (node.getHost().equals(address))
                 if (node.getPort() == port)
@@ -65,14 +59,20 @@ public class NodeService {
             if (node.getName().equals(name))
                 return false;
         }
-        nodeList.add(new Node(address, port, name));
-        saveProperties();
+        nodeList.add(new Node(address, port, name, key));
+//        saveProperties();
         return true;
     }
 
     public Optional<Node> getNodeByName(String name) {
         return nodeList.stream()
                 .filter(n -> n.getName().equals(name))
+                .findAny();
+    }
+
+    public Optional<Node> getNodeByPublicKey(String public_key) {
+        return nodeList.stream()
+                .filter(n -> n.getKey().equals(public_key))
                 .findAny();
     }
 

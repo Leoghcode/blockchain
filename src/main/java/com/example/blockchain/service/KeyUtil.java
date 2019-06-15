@@ -66,9 +66,8 @@ public class KeyUtil {
         return hashMap;
     }
 
-    public static Map<String, String> signMessage(String privateKey) {
-        Map<String, String> hashMap = new HashMap<>();
-        String message = String.valueOf(new Date().getTime());
+    public static String signMessage(String privateKey, String message) {
+        String sign = null;
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(hex2Bytes(privateKey));
         try {
             KeyFactory keyFactory = KeyFactory.getInstance("EC");
@@ -79,13 +78,11 @@ public class KeyUtil {
 
 
             Base64.Encoder encoder = Base64.getEncoder();
-            String sign = encoder.encodeToString(signature.sign());
-            hashMap.put("message", message);
-            hashMap.put("signature", sign);
+            sign = encoder.encodeToString(signature.sign());
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | InvalidKeyException | SignatureException e) {
             e.printStackTrace();
         }
-        return hashMap;
+        return sign;
     }
 
     public static boolean verify(String publicKey, String message, String signature) {
@@ -126,15 +123,5 @@ public class KeyUtil {
             bytes[i] = (byte)integer;
         }
         return bytes;
-    }
-    public static void main(String[] args) {
-        Map<String, String> hashMap = getSHAKeys();
-        System.out.println(hashMap.get("address"));
-        System.out.println(hashMap.get("private_key"));
-        Map<String, String> hashMap2 = signMessage(hashMap.get("private_key"));
-        System.out.println(hashMap2.get("message"));
-        System.out.println(hashMap2.get("signature"));
-
-        System.out.println(verify(hashMap.get("address"), hashMap2.get("message"), hashMap2.get("signature")));
     }
 }
