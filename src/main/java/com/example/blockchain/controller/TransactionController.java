@@ -32,8 +32,8 @@ public class TransactionController {
     }
 
     @RequestMapping(value = "validateRequest", method = RequestMethod.POST)
-    public HttpStatus validate(@RequestBody String str) {
-        Request request = JSON.parseObject(str, Request.class);
+    public HttpStatus validate(@RequestBody Request request) {
+//        Request request = JSON.parseObject(str, Request.class);
         boolean validation_result = KeyUtil.verify(request.getFrom(), request.getFrom_message(), request.getFrom_signature())
                 & KeyUtil.verify(request.getTo(), request.getTo_message(), request.getTo_signature());
         if (validation_result) {
@@ -56,7 +56,7 @@ public class TransactionController {
             if (validator.isPresent()) {
                 Node node = validator.get();
                 String url = "http://" + node.getHost() + ":" + node.getPort() + "/transaction/validateRequest";
-                return restTemplate.postForObject(url, JSON.toJSONString(request), HttpStatus.class);
+                return restTemplate.postForObject(url, request, HttpStatus.class);
             } else
                 return HttpStatus.NOT_FOUND;
         } catch (Exception e) {
@@ -97,10 +97,10 @@ public class TransactionController {
             Transaction transaction;
             if (value != null)
                 transaction = new Transaction(keyService.getPublic_key(), node.getKey(), type,
-                    JSON.toJSONString(items), multiSign, value);
+                    items, multiSign, value);
             else
                 transaction = new Transaction(keyService.getPublic_key(), node.getKey(), type,
-                        JSON.toJSONString(items), multiSign);
+                        items, multiSign);
             String message = KeyUtil.getSHA256Str(JSON.toJSONString(transaction) + System.currentTimeMillis());
             String signature = KeyUtil.signMessage(keyService.getPrivate_key(), message);
 

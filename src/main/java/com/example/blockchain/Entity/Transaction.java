@@ -1,22 +1,24 @@
 package com.example.blockchain.Entity;
 
+import java.util.List;
+
 public class Transaction {
     private String from;    // from address
     private String to;      // to address
-    private String item;    // item hash
+    private List<Item> item;    // item hash
     private String type;
     private boolean multiSign;
     private int value;
 
     public Transaction() {
-        this("", "", "", "", false);
+        this("", "", "", null, false);
     }
 
-    public Transaction(String from, String to, String type, String item, boolean multiSign) {
+    public Transaction(String from, String to, String type, List<Item> item, boolean multiSign) {
         this(from, to, type, item, multiSign, 0);
     }
 
-    public Transaction(String from, String to, String type, String item, boolean multiSign, int value) {
+    public Transaction(String from, String to, String type, List<Item> item, boolean multiSign, int value) {
         this.from = from;
         this.to = to;
         this.type = type;
@@ -41,11 +43,11 @@ public class Transaction {
         this.to = to;
     }
 
-    public String getItem() {
+    public List<Item> getItem() {
         return item;
     }
 
-    public void setItem(String item) {
+    public void setItem(List<Item> item) {
         this.item = item;
     }
 

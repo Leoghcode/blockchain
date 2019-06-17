@@ -76,7 +76,7 @@ public class BlockChainService {
         List<Block> chain = new ArrayList<>();
         // 验证
         String address = "node1";
-        transactions.add(new Transaction(address, address, "initial", "initial block", false));
+        transactions.add(new Transaction(address, address, "initial", null, false));
         String previousHash = "-1";
         Block initialBlock = new Block(0, transactions, previousHash);
         chain.add(initialBlock);
