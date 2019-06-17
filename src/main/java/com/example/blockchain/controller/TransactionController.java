@@ -31,6 +31,44 @@ public class TransactionController {
         return JSON.toJSONString(bcService.getBlockChain());
     }
 
+    @RequestMapping(value = "updateTransaction", method = RequestMethod.POST)
+    public HttpStatus updateTransaction(@RequestBody Request request) {
+        try {
+            List<Item> updatedItems = request.getTransaction().getItem();
+            int count = 0;
+            for (Item i : updatedItems) {
+                for (Item j : BlockChainService.getItems()) {
+                    if (i.getHash().equals(j.getHash())) {
+                        if (!j.getIs_sold()) {
+                            j.setIs_sold(true);
+                            count++;
+                        }
+                    }
+                }
+            }
+
+            for (int index = 0; index < bcService.getRequests().size(); index++) {
+                Request r = bcService.getRequests().get(index);
+                if (r.getStatus() == 1){
+                    count = 0;
+                    if (r.getTransaction().getItem().size() == request.getTransaction().getItem().size())
+                        for (Item i : r.getTransaction().getItem())
+                            for (Item j : request.getTransaction().getItem())
+                                if (i.getHash().equals(j.getHash()))
+                                    count++;
+                    if (count == r.getTransaction().getItem().size()) {
+                        bcService.getRequests().get(index).setStatus(2);
+                        break;
+                    }
+                }
+            }
+            return HttpStatus.OK;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
+    }
+
     @RequestMapping(value = "validateRequest", method = RequestMethod.POST)
     public HttpStatus validate(@RequestBody Request request) {
 //        Request request = JSON.parseObject(str, Request.class);
@@ -56,7 +94,16 @@ public class TransactionController {
             if (validator.isPresent()) {
                 Node node = validator.get();
                 String url = "http://" + node.getHost() + ":" + node.getPort() + "/transaction/validateRequest";
-                return restTemplate.postForObject(url, request, HttpStatus.class);
+                HttpStatus result = restTemplate.postForObject(url, request, HttpStatus.class);
+                if (result.equals(HttpStatus.OK)) {
+                    Optional<Node> from = nodeService.getNodeByPublicKey(request.getFrom());
+                    if (from.isPresent()) {
+                        String backUrl = "http://" + from.get().getHost() + ":" + from.get().getPort() + "/transaction/updateTransaction";
+                        return restTemplate.postForObject(backUrl, request, HttpStatus.class);
+                    } else
+                        return HttpStatus.INTERNAL_SERVER_ERROR;
+                } else
+                    return result;
             } else
                 return HttpStatus.NOT_FOUND;
         } catch (Exception e) {
@@ -89,6 +136,13 @@ public class TransactionController {
         Integer value = null;
         if (request.containsKey("value"))
             value = Integer.valueOf(request.get("value").toString());
+        if (type.equals("质检结果") && value != null && value == 1) {
+//            if (this is 质检处) {
+//                for (Item i : items) {
+//                    i.setIs_qualified(true);
+//                }
+//            }
+        }
 
         // 查找节点
         Optional<Node> toNode = nodeService.getNodeByName(to);
