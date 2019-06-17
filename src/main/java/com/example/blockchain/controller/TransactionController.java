@@ -2,10 +2,9 @@ package com.example.blockchain.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.blockchain.Entity.*;
-import com.example.blockchain.service.BlockChainService;
-import com.example.blockchain.service.KeyService;
-import com.example.blockchain.service.KeyUtil;
-import com.example.blockchain.service.NodeService;
+import com.example.blockchain.service.*;
+import org.omg.CORBA.Environment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -14,9 +13,12 @@ import java.util.*;
 @RestController
 @RequestMapping("transaction")
 public class TransactionController {
-    private BlockChainService bcService = new BlockChainService();
-    private NodeService nodeService = new NodeService();
-    private KeyService keyService = new KeyService();
+    @Autowired
+    private BlockChainService bcService;
+    @Autowired
+    private NodeService nodeService;
+    @Autowired
+    private KeyService keyService;
     private RestTemplate restTemplate = new RestTemplate();
 
     @RequestMapping(value = "getTransactions", method = RequestMethod.GET)

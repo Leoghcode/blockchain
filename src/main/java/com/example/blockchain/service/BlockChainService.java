@@ -2,22 +2,28 @@ package com.example.blockchain.service;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.blockchain.Entity.Block;
-import com.example.blockchain.Entity.Item;
-import com.example.blockchain.Entity.Request;
-import com.example.blockchain.Entity.Transaction;
+import com.example.blockchain.Entity.*;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class BlockChainService {
-    private static int blockSize = 32;
+    @Autowired
+    private NodeService nodeService;
+    private RestTemplate restTemplate = new RestTemplate();
+
+    private static int blockSize = 2;
     private static ArrayList<Transaction> transactions = new ArrayList<>();
     private static String filePath = ResourceUtils.CLASSPATH_URL_PREFIX + "BlockChain.json";
     //    private static ArrayList<Block> chain = loadBlockChain();
@@ -31,6 +37,10 @@ public class BlockChainService {
 
     public static void addItem(List<Item> i) {
         items.addAll(i);
+    }
+
+    public BlockChainService() {
+        chain = (ArrayList<Block>) initiateBlockChain();
     }
 
     private static ArrayList<Block> loadBlockChain() {
@@ -100,6 +110,17 @@ public class BlockChainService {
         transactions.add(transaction);
         if (transactions.size() == blockSize) {
             addBlock();
+            System.out.println("trigger in add block");
+            List<Node> nodeList = nodeService.getNodeArrayList();
+            for(Node node: nodeList) {
+                String url = "http://" + node.getHost() + ":" + node.getPort() + "/blockchain/consensus";
+                Map<String, Object> request = new HashMap<>();
+                request.put("blockchain", chain);
+                System.out.println(request);
+                System.out.println(JSON.toJSONString(request));
+                Object res = restTemplate.postForObject(url, request, HttpStatus.class);
+                System.out.println(res);
+            }
         }
     }
 
@@ -116,6 +137,21 @@ public class BlockChainService {
         return transactions;
     }
 
+    public Boolean consensus(List<Block> blockchain2) {
+        if(!validateBlockchain(blockchain2)) return false;
+        if(blockchain2.size() > chain.size()) {
+            System.out.println("in service consensus");
+            System.out.println(blockchain2.toString());
+            chain = (ArrayList<Block>) blockchain2;
+            System.out.println(chain.toString());
+            return true;
+        }
+        return false;
+    }
+
+    private Boolean validateBlockchain(List<Block> blockchain) {
+        return true;
+    }
 }
 
 

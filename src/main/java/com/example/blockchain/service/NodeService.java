@@ -2,12 +2,14 @@ package com.example.blockchain.service;
 
 import com.alibaba.fastjson.JSON;
 import com.example.blockchain.Entity.Node;
+import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class NodeService {
     private static final String filePath = ResourceUtils.CLASSPATH_URL_PREFIX + "hosts";
 //    private static List<Node> nodeList = loadProperties();
@@ -82,5 +84,9 @@ public class NodeService {
 
     public String getNodeList () {
         return JSON.toJSONString(nodeList);
+    }
+
+    public List<Node> getNodeArrayList () {
+        return nodeList;
     }
 }

@@ -20,6 +20,15 @@ public class Block {
         this.hash = hash();
     }
 
+    public Block(int index, String hash, String previousHash, long timestamp, String lastTransaction, List transactions) {
+        this.index = index;
+        this.hash = hash;
+        this.previousHash = previousHash;
+        this.timestamp = timestamp;
+        this.lastTransaction = lastTransaction;
+        this.transactions = transactions;
+    }
+
     private String hash() {
         String transStr = JSON.toJSONString(transactions);
         String text = "" + index + previousHash + timestamp + lastTransaction + transStr;
