@@ -12,6 +12,7 @@ public class Item {
     private int volume;
     private long create_date;
     private boolean is_qualified;
+    private boolean is_sold;
 
     public Item() {
         this.create_date = System.currentTimeMillis();
@@ -25,6 +26,7 @@ public class Item {
         this.create_date = System.currentTimeMillis();
         this.is_qualified = false;
         this.volume = volume;
+        this.is_sold = false;
         this.hash = KeyUtil.getSHA256Str(name + source + String.valueOf(volume)
                 + String.valueOf(create_date) + new Random());
     }
@@ -75,5 +77,13 @@ public class Item {
 
     public void setSource(String source) {
         this.source = source;
+    }
+
+    public boolean getIs_sold() {
+        return is_sold;
+    }
+
+    public void setIs_sold(boolean is_sold) {
+        this.is_sold = is_sold;
     }
 }

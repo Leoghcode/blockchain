@@ -1,6 +1,9 @@
 package com.example.blockchain.Entity;
 
+import com.example.blockchain.service.KeyUtil;
+
 import java.util.List;
+import java.util.Random;
 
 public class Transaction {
     private String from;    // from address
@@ -8,6 +11,7 @@ public class Transaction {
     private List<Item> item;    // item hash
     private String type;
     private boolean multiSign;
+    private String hash;
     private int value;
 
     public Transaction() {
@@ -24,6 +28,7 @@ public class Transaction {
         this.type = type;
         this.item = item;
         this.multiSign = multiSign;
+        this.hash = KeyUtil.getSHA256Str(from + to + type + item + System.currentTimeMillis() + new Random());
         this.value = value;
     }
 
@@ -65,5 +70,13 @@ public class Transaction {
 
     public void setValue(int value) {
         this.value = value;
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 }
