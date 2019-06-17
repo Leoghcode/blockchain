@@ -150,6 +150,11 @@ public class BlockChainService {
     }
 
     private Boolean validateBlockchain(List<Block> blockchain) {
+        String previousHash = blockchain.get(0).getPreviousHash();
+        for(Block block: blockchain) {
+            if(!previousHash.equals(block.getPreviousHash())) return false;
+            previousHash = block.getHash();
+        }
         return true;
     }
 }
