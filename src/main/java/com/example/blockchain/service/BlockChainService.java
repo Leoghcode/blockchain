@@ -8,24 +8,30 @@ import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.example.blockchain.Entity.*;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.context.WebServerInitializedEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
+
 @Service
-public class BlockChainService {
+public class BlockChainService implements ApplicationListener<WebServerInitializedEvent>  {
     @Autowired
     private NodeService nodeService;
+    @Autowired
+    private KeyService keyService;
     private RestTemplate restTemplate = new RestTemplate();
 
-    private static int blockSize = 2;
+    private static int blockSize = 3;
     private static ArrayList<Transaction> transactions = new ArrayList<>();
-    private static String filePath = ResourceUtils.CLASSPATH_URL_PREFIX + "BlockChain.json";
+    private String filePath = "blockchain.json";
     //    private static ArrayList<Block> chain = loadBlockChain();
     private static ArrayList<Block> chain = new ArrayList<>();
     private static ArrayList<Item> items = new ArrayList<>();
@@ -40,29 +46,32 @@ public class BlockChainService {
     }
 
     public BlockChainService() {
-        chain = (ArrayList<Block>) initiateBlockChain();
+
     }
 
-    private static ArrayList<Block> loadBlockChain() {
+    private ArrayList<Block> loadBlockChain() {
         try {
-            File file = ResourceUtils.getFile(filePath);
-            InputStream is = new FileInputStream(file);
-            List<Block> c = JSON.parseArray(IOUtils.toString(is, "utf8"), Block.class);
-            if (c.size() == 0)
-                c = initiateBlockChain();
-            is.close();
-            return (ArrayList<Block>) c;
-        } catch (IOException e) {
+            File file = new File(filePath);
+            List<Block> c = JSON.parseArray(IOUtils.toString(new FileInputStream(file), "utf8"), Block.class);
+            if (c.size() != 0)
+                // c = initiateBlockChain();
+                return (ArrayList<Block>) c;
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
-            return null;
+        }catch (IOException e) {
+            e.printStackTrace();
         }
+        List<Block> initBC = initiateBlockChain();
+        writeToFile(filePath, JSON.toJSONString(initBC, true));
+        return (ArrayList<Block>) initBC;
     }
 
-    private static boolean saveBlockChain() {
+    private boolean writeToFile(String path, String text) {
+        File file = new File(path);
+        BufferedWriter bw = null;
         try {
-            File file = ResourceUtils.getFile(filePath);
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            bw.write(JSON.toJSONString(chain));
+            bw = new BufferedWriter(new FileWriter(file));
+            bw.write(text);
             bw.flush();
             bw.close();
             return true;
@@ -70,6 +79,10 @@ public class BlockChainService {
             e.printStackTrace();
             return false;
         }
+    }
+    private boolean saveBlockChain() {
+        System.out.println(filePath);
+        return writeToFile(filePath, JSON.toJSONString(chain, true));
     }
 
     private static List<Block> initiateBlockChain() {
@@ -102,9 +115,13 @@ public class BlockChainService {
         String previousHash = lastBlock.getHash();
         Block newBlock = new Block(index, transactions, previousHash);
         chain.add(newBlock);
+        saveBlockChain();
     }
 
     public void addTransaction(Transaction transaction) {
+//        if(!keyService.isValidator()) {
+//            return;
+//        }
         transactions.add(transaction);
         if (transactions.size() == blockSize) {
             addBlock();
@@ -127,10 +144,12 @@ public class BlockChainService {
     public List<Block> getBlockChain() {
         return chain;
     }
-
+    public boolean saveBC() {
+        return saveBlockChain();
+    }
     public static void main(String[] args) {
         BlockChainService bcService = new BlockChainService();
-        System.out.println(bcService.getBlockChain());
+        System.out.println(bcService.saveBlockChain());
     }
 
     public List<Transaction> getTransactions() {
@@ -144,6 +163,7 @@ public class BlockChainService {
             System.out.println(blockchain2.toString());
             chain = (ArrayList<Block>) blockchain2;
             System.out.println(chain.toString());
+            saveBlockChain();
             return true;
         }
         return false;
@@ -156,6 +176,13 @@ public class BlockChainService {
             previousHash = block.getHash();
         }
         return true;
+    }
+
+    @Override
+    public void onApplicationEvent(WebServerInitializedEvent event) {
+        int port = event.getWebServer().getPort();
+        filePath = port + filePath;
+        chain = loadBlockChain();
     }
 }
 
