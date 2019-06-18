@@ -1,10 +1,7 @@
 package com.example.blockchain.service;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -183,6 +180,49 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
         int port = event.getWebServer().getPort();
         filePath = port + filePath;
         chain = loadBlockChain();
+    }
+
+    public static Map<String, Object> trace(String hash) {
+        List<Transaction> found = new ArrayList<>();
+        for (Block block : chain) {
+            for (int index = 0; index < block.getTransactions().size(); index++) {
+                Transaction t = (Transaction) block.getTransactions().get(index);
+                boolean flag = false;
+                for (Item i : t.getItem()) {
+                    if (i.getHash().equals(hash)) {
+                        found.add(t);
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag)
+                    break;
+            }
+        }
+        for (Transaction t : transactions) {
+            boolean flag = false;
+            for (Item i : t.getItem()) {
+                if (i.getHash().equals(hash)) {
+                    found.add(t);
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag)
+                break;
+        }
+        List<Node> nodes = new ArrayList<>();
+        for (Transaction t : found) {
+            NodeService nodeService = new NodeService();
+            Optional<Node> foundFrom = nodeService.getNodeByName(t.getFrom());
+            foundFrom.ifPresent(nodes::add);
+            Optional<Node> foundTo = nodeService.getNodeByName(t.getTo());
+            foundTo.ifPresent(nodes::add);
+        }
+        Map<String, Object> ret = new HashMap<>();
+        ret.put("transactions", found);
+        ret.put("nodes", nodes);
+        return ret;
     }
 }
 
