@@ -102,8 +102,6 @@ public class BlockChainService {
         String previousHash = lastBlock.getHash();
         Block newBlock = new Block(index, transactions, previousHash);
         chain.add(newBlock);
-        // 清空交易缓冲区
-        transactions = new ArrayList<>();
     }
 
     public void addTransaction(Transaction transaction) {
@@ -121,6 +119,8 @@ public class BlockChainService {
                 Object res = restTemplate.postForObject(url, request, HttpStatus.class);
                 System.out.println(res);
             }
+            // 清空交易缓冲区
+            transactions = new ArrayList<>();
         }
     }
 
