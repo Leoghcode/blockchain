@@ -43,4 +43,9 @@ public class BlockChainController {
         }
         return HttpStatus.INTERNAL_SERVER_ERROR;
     }
+
+    @RequestMapping("/save")
+    public boolean saveBlockChain() {
+        return bcService.saveBC();
+    }
 }

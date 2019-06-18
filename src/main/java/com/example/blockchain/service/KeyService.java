@@ -1,11 +1,8 @@
 package com.example.blockchain.service;
 
 import com.example.blockchain.Entity.CAEntity;
-import com.example.blockchain.Entity.Node;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.context.WebServerInitializedEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -77,5 +74,26 @@ public class KeyService implements ApplicationListener<WebServerInitializedEvent
 
         public_key = res.getPublic_key();
         private_key = res.getPrivate_key();
+    }
+
+    public boolean isInspector() {
+        String CA_URL = "http://localhost:8080/CA/isInspector";
+        return isSomeone(CA_URL);
+    }
+
+    public boolean isValidator() {
+        String CA_URL = "http://localhost:8080/CA/isValidator";
+        return isSomeone(CA_URL);
+    }
+
+    private boolean isSomeone(String CA_URL) {
+        String message = KeyUtil.getSHA256Str("" + System.currentTimeMillis());
+        String signature = KeyUtil.signMessage(private_key, message);
+        Map<String, String> request = new HashMap<>();
+        request.put("message", message);
+        request.put("signature", signature);
+        Boolean res;
+        res = restTemplate.postForObject(CA_URL, request, Boolean.class);
+        return res;
     }
 }

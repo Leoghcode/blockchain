@@ -90,7 +90,7 @@ public class TransactionController {
             bcService.getRequests().get(index).setStatus(1);
             Request request = bcService.getRequests().get(index);
 
-            Optional<Node> validator = nodeService.getNodeByName("validator");
+            Optional<Node> validator = nodeService.getNodeByName("认证机构");
             if (validator.isPresent()) {
                 Node node = validator.get();
                 String url = "http://" + node.getHost() + ":" + node.getPort() + "/transaction/validateRequest";
@@ -137,11 +137,11 @@ public class TransactionController {
         if (request.containsKey("value"))
             value = Integer.valueOf(request.get("value").toString());
         if (type.equals("质检结果") && value != null && value == 1) {
-//            if (this is 质检处) {
-//                for (Item i : items) {
-//                    i.setIs_qualified(true);
-//                }
-//            }
+            if (keyService.isInspector()) {
+                for (Item i : items) {
+                    i.setIs_qualified(true);
+                }
+            }
         }
 
         // 查找节点

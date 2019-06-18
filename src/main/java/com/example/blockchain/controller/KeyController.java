@@ -17,4 +17,14 @@ public class KeyController {
         return keyService.getPublic_key();
     }
 
+    @RequestMapping(value = "isInspector", method = RequestMethod.GET)
+    public Boolean isInspector() {
+        return keyService.isInspector();
+    }
+
+    @RequestMapping(value = "isValidator", method = RequestMethod.GET)
+    public Boolean isValidator() {
+        return keyService.isValidator();
+    }
+
 }
