@@ -48,4 +48,9 @@ public class BlockChainController {
     public boolean saveBlockChain() {
         return bcService.saveBC();
     }
+
+    @RequestMapping(value = "trace", method = RequestMethod.POST)
+    public String trace(@RequestBody String hash) {
+        return JSON.toJSONString(BlockChainService.trace(hash));
+    }
 }
