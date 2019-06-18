@@ -185,39 +185,55 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
     public static Map<String, Object> trace(String hash) {
         List<Transaction> found = new ArrayList<>();
         for (Block block : chain) {
+            if (block.getPreviousHash().equals("-1"))
+                continue;
             for (int index = 0; index < block.getTransactions().size(); index++) {
-                Transaction t = (Transaction) block.getTransactions().get(index);
-                boolean flag = false;
+                Transaction t = JSON.parseObject(JSON.toJSONString(block.getTransactions().get(index)), Transaction.class);
                 for (Item i : t.getItem()) {
                     if (i.getHash().equals(hash)) {
                         found.add(t);
-                        flag = true;
                         break;
                     }
                 }
-                if (flag)
-                    break;
             }
         }
         for (Transaction t : transactions) {
-            boolean flag = false;
             for (Item i : t.getItem()) {
                 if (i.getHash().equals(hash)) {
                     found.add(t);
-                    flag = true;
                     break;
                 }
             }
-            if (flag)
-                break;
         }
         List<Node> nodes = new ArrayList<>();
+        NodeService nodeService = new NodeService();
+        KeyService keyService = new KeyService();
+        String name = keyService.getNodename();
+        String host = keyService.getHost();
+        int port = keyService.getPort();
+        String lastKey = "";
         for (Transaction t : found) {
-            NodeService nodeService = new NodeService();
-            Optional<Node> foundFrom = nodeService.getNodeByName(t.getFrom());
-            foundFrom.ifPresent(nodes::add);
-            Optional<Node> foundTo = nodeService.getNodeByName(t.getTo());
-            foundTo.ifPresent(nodes::add);
+            Optional<Node> foundFrom = nodeService.getNodeByPublicKey(t.getFrom());
+            if(foundFrom.isPresent() && !foundFrom.get().getKey().equals(lastKey)) {
+                nodes.add(foundFrom.get());
+                lastKey = nodes.get(nodes.size() - 1).getKey();
+            }
+            if (keyService.getPublic_key().equals(t.getFrom())
+                    && !keyService.getPublic_key().equals(lastKey)) {
+                nodes.add(new Node(host, port, name, keyService.getPublic_key()));
+                lastKey = nodes.get(nodes.size() - 1).getKey();
+            }
+            Optional<Node> foundTo = nodeService.getNodeByPublicKey(t.getTo());
+            if(foundTo.isPresent() && !foundTo.get().getKey().equals(lastKey)) {
+                nodes.add(foundTo.get());
+                lastKey = nodes.get(nodes.size() - 1).getKey();
+            }
+            // foundTo.ifPresent(nodes::add);
+            if (keyService.getPublic_key().equals(t.getTo())
+                    && !keyService.getPublic_key().equals(lastKey)) {
+                nodes.add(new Node(host, port, name, keyService.getPublic_key()));
+                lastKey = nodes.get(nodes.size() - 1).getKey();
+            }
         }
         Map<String, Object> ret = new HashMap<>();
         ret.put("transactions", found);

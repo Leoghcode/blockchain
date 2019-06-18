@@ -15,6 +15,7 @@ import java.util.Map;
 @Service
 public class KeyService implements ApplicationListener<WebServerInitializedEvent> {
     private static String localAddress;
+    private static String nodename;
     private static String public_key;
     private static String private_key;
     private RestTemplate restTemplate = new RestTemplate();
@@ -41,6 +42,29 @@ public class KeyService implements ApplicationListener<WebServerInitializedEvent
         this.private_key = private_key;
     }
 
+    public String getNodename() {
+        return nodename;
+    }
+
+    public void setNodename(String nodename) {
+        KeyService.nodename = nodename;
+    }
+
+    public String getLocalAddress() {
+        return localAddress;
+    }
+
+    public void setLocalAddress(String localAddress) {
+        KeyService.localAddress = localAddress;
+    }
+
+    public String getHost() {
+        return localAddress.split(":")[0];
+    }
+
+    public int getPort() {
+        return Integer.parseInt(localAddress.split(":")[1]);
+    }
 
     @Override
     public void onApplicationEvent(WebServerInitializedEvent event) {
@@ -74,6 +98,7 @@ public class KeyService implements ApplicationListener<WebServerInitializedEvent
 
         public_key = res.getPublic_key();
         private_key = res.getPrivate_key();
+        nodename = res.getName();
     }
 
     public boolean isInspector() {

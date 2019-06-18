@@ -3,6 +3,7 @@ package com.example.blockchain.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.example.blockchain.Entity.Block;
 import com.example.blockchain.Entity.Transaction;
 import com.example.blockchain.service.BlockChainService;
@@ -50,7 +51,10 @@ public class BlockChainController {
     }
 
     @RequestMapping(value = "trace", method = RequestMethod.POST)
-    public String trace(@RequestBody String hash) {
-        return JSON.toJSONString(BlockChainService.trace(hash));
+    public String trace(@RequestBody Map<String, String> hash) {
+        String key = "hash";
+        if (hash.containsKey(key))
+            return JSON.toJSONString(BlockChainService.trace(hash.get(key)), SerializerFeature.DisableCircularReferenceDetect);
+        return null;
     }
 }

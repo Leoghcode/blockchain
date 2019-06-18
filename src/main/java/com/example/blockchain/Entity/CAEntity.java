@@ -1,12 +1,19 @@
 package com.example.blockchain.Entity;
 
 public class CAEntity {
+    private String name;
     private String public_key;
     private String private_key;
     public  CAEntity() {
 
     }
     public CAEntity(String public_key, String private_key) {
+        this.public_key = public_key;
+        this.private_key = private_key;
+    }
+
+    public CAEntity(String name, String public_key, String private_key) {
+        this.name = name;
         this.public_key = public_key;
         this.private_key = private_key;
     }
@@ -25,6 +32,14 @@ public class CAEntity {
 
     public void setPrivate_key(String private_key) {
         this.private_key = private_key;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
 
