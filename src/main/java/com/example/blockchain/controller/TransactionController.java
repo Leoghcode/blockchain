@@ -186,8 +186,8 @@ public class TransactionController {
             if (node.isPresent()) {
                 String to_message = KeyUtil.getSHA256Str(JSON.toJSONString(transaction) + System.currentTimeMillis()),
                         to_signature = KeyUtil.signMessage(keyService.getPrivate_key(), to_message);
-                bcService.getRequests().add(new Request(public_key, message, signature,
-                        keyService.getPublic_key(), to_message, to_signature, transaction));
+                bcService.getRequests().add(new Request(public_key, node.get().getName(), message, signature,
+                        keyService.getPublic_key(), keyService.getNodename(), to_message, to_signature, transaction));
                 return HttpStatus.OK;
             } else
                 return HttpStatus.UNAUTHORIZED;

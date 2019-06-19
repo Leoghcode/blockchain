@@ -2,9 +2,11 @@ package com.example.blockchain.Entity;
 
 public class Request {
     private String from;
+    private String fromName;
     private String from_message;
     private String from_signature;
     private String to;
+    private String toName;
     private String to_message;
     private String to_signature;
     private Transaction transaction;
@@ -13,12 +15,14 @@ public class Request {
 
     public Request() {}
 
-    public Request(String from, String from_message, String from_signature,
-                   String to, String to_message, String to_signature, Transaction transaction) {
+    public Request(String from, String fromName, String from_message, String from_signature,
+                   String to, String toName, String to_message, String to_signature, Transaction transaction) {
         this.from = from;
+        this.fromName = fromName;
         this.from_message = from_message;
         this.from_signature = from_signature;
         this.to = to;
+        this.toName = toName;
         this.to_message = to_message;
         this.to_signature = to_signature;
         this.transaction = transaction;
@@ -87,5 +91,21 @@ public class Request {
 
     public void setTo_signature(String to_signature) {
         this.to_signature = to_signature;
+    }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    public String getToName() {
+        return toName;
+    }
+
+    public void setToName(String toName) {
+        this.toName = toName;
     }
 }
