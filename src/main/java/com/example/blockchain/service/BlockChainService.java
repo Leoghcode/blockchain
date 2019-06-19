@@ -28,6 +28,15 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
 
     private static int blockSize = 3;
     private static ArrayList<Transaction> transactions = new ArrayList<>();
+    private static Block dynamicBlock;
+    // 接收者状态 0 未接受 1 已接受 2 已计算
+    private static int validatorStatus = 0;
+    // 提案者状态 0 不提案 1 发起提案 2 获得计算权
+    private static int proposerStatus = 0;
+    // 候选
+    private static Transaction candidateTransaction = null;
+    private static String curProposer = null;
+//    private static ArrayList<Transaction> holdTransactions = new ArrayList<>();
     private String filePath = "blockchain.json";
     //    private static ArrayList<Block> chain = loadBlockChain();
     private static ArrayList<Block> chain = new ArrayList<>();
@@ -88,7 +97,7 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
         String address = "node1";
         transactions.add(new Transaction(address, address, "initial", null, false));
         String previousHash = "-1";
-        Block initialBlock = new Block(0, transactions, previousHash);
+        Block initialBlock = new Block(0, previousHash, 0, null, transactions);
         chain.add(initialBlock);
         // 清空交易缓冲区
         transactions = new ArrayList<>();
@@ -107,20 +116,26 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
         // 验证是否为validator
         if (chain.size() == 0)
             return;
-        Block lastBlock = chain.get(chain.size() - 1);
-        int index = lastBlock.getIndex() + 1;
-        String previousHash = lastBlock.getHash();
-        Block newBlock = new Block(index, transactions, previousHash);
-        chain.add(newBlock);
+//        Block lastBlock = chain.get(chain.size() - 1);
+//        int index = lastBlock.getIndex() + 1;
+//        String previousHash = lastBlock.getHash();
+//        Block newBlock = new Block(index, transactions, previousHash);
+        chain.add(dynamicBlock);
         saveBlockChain();
     }
 
-    public void addTransaction(Transaction transaction) {
+
+    public boolean addTransaction(Transaction transaction) {
 //        if(!keyService.isValidator()) {
 //            return;
 //        }
+        if(!dynamicBlockConsensus(transaction)) {
+            return false;
+        }
+
         transactions.add(transaction);
-        if (transactions.size() == blockSize) {
+
+        if (dynamicBlock.getTransactions().size() == blockSize) {
             addBlock();
             System.out.println("trigger in add block");
             List<Node> nodeList = nodeService.getNodeArrayList();
@@ -130,12 +145,22 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
                 request.put("blockchain", chain);
                 System.out.println(request);
                 System.out.println(JSON.toJSONString(request));
-                Object res = restTemplate.postForObject(url, request, HttpStatus.class);
-                System.out.println(res);
+                try {
+                    Object res = restTemplate.postForObject(url, request, HttpStatus.class);
+                    System.out.println(res);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             // 清空交易缓冲区
             transactions = new ArrayList<>();
+
+            Block lastBlock = chain.get(chain.size() - 1);
+            int index = lastBlock.getIndex() + 1;
+            String previousHash = lastBlock.getHash();
+            dynamicBlock = new Block(index, previousHash, 0, null, new ArrayList<>());
         }
+        return true;
     }
 
     public List<Block> getBlockChain() {
@@ -161,6 +186,11 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
             chain = (ArrayList<Block>) blockchain2;
             System.out.println(chain.toString());
             saveBlockChain();
+
+            Block lastBlock = chain.get(chain.size() - 1);
+            int index = lastBlock.getIndex() + 1;
+            String previousHash = lastBlock.getHash();
+            dynamicBlock = new Block(index, previousHash, 0, null, new ArrayList<>());
             return true;
         }
         return false;
@@ -180,6 +210,11 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
         int port = event.getWebServer().getPort();
         filePath = port + filePath;
         chain = loadBlockChain();
+
+        Block lastBlock = chain.get(chain.size() - 1);
+        int index = lastBlock.getIndex() + 1;
+        String previousHash = lastBlock.getHash();
+        dynamicBlock = new Block(index, previousHash, 0, null, new ArrayList<>());
     }
 
     public static Map<String, Object> trace(String hash) {
@@ -239,6 +274,140 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
         ret.put("transactions", found);
         ret.put("nodes", nodes);
         return ret;
+    }
+
+
+    // transaction consensus
+    private boolean dynamicBlockConsensus(Transaction transaction) {
+        // send transaction
+        // 1. 发起提案
+        proposerStatus = 1;
+        int receiveNum = 0;
+        String public_key = keyService.getPublic_key();
+
+        System.out.println("JSON string:" + JSON.toJSONString(transaction));
+
+        List<Node> validatorList = nodeService.getValidatorList();
+        Map<String, Object> request0 = new HashMap<>();
+        request0.put("transaction", transaction);
+        request0.put("public_key", public_key);
+        System.out.println(request0);
+        System.out.println(JSON.toJSONString(request0));
+        for(Node node: validatorList) {
+            System.out.println(node.getName());
+            String url = "http://" + node.getHost() + ":" + node.getPort() + "/blockchain/dynamic/newtran";
+            String res = restTemplate.postForObject(url, request0, String.class);
+            System.out.println(res);
+            if(res.equals("received")) {
+                receiveNum++;
+            }
+        }
+        System.out.println("receiveNum:" + receiveNum);
+        if(validatorList.size() < 2 * (receiveNum + 1)) {
+            proposerStatus = 2;
+            if(dynamicBlock.getTimestamp() == 0) {
+                System.out.println("justify dynamicBlock time");
+                dynamicBlock.justifyBlockTime(System.currentTimeMillis());
+            }
+            long timestamp = dynamicBlock.getTimestamp();
+            String newHash = dynamicBlock.getNewBlockStatus(transaction);
+            int sameNum = 0;
+            Map<String, Object> request = new HashMap<>();
+            request.put("timestamp", timestamp);
+            request.put("public_key", public_key);
+            for(Node node: validatorList) {
+                String url = "http://" + node.getHost() + ":" + node.getPort() + "/blockchain/dynamic/compute";
+                String res = restTemplate.postForObject(url, request, String.class);
+                System.out.println("computed res: " + res);
+                if(res.equals(newHash)) {
+                    sameNum++;
+                }
+            }
+            System.out.println("local: " + newHash);
+            System.out.println("sameNum:" + sameNum);
+            if((sameNum + 1) * 2 > validatorList.size()) {
+                dynamicBlock.addNewTransaction(transaction);
+                int consensusNum = 0;
+                Map<String, Object> request2 = new HashMap<>();
+                request2.put("dynamicBlock", dynamicBlock);
+                request2.put("public_key", public_key);
+                for(Node node: validatorList) {
+                    String url = "http://" + node.getHost() + ":" + node.getPort() + "/blockchain/dynamic/consensus";
+                    String res = restTemplate.postForObject(url, request2, String.class);
+                    System.out.println("dynamic consensus res: " + res);
+                    if(res.equals("consensus")) {
+                        consensusNum++;
+                    }
+                }
+                return true;
+            } else {
+                Map<String, Object> request3 = new HashMap<>();
+                request3.put("public_key", public_key);
+                for(Node node: validatorList) {
+                    String url = "http://" + node.getHost() + ":" + node.getPort() + "/blockchain/dynamic/back";
+                    String res = restTemplate.postForObject(url, request3, String.class);
+                    System.out.println("back res: " + res);
+                }
+//                dynamicBlock.rollBack();
+                return false;
+            }
+        } else {
+            proposerStatus = 0;
+            return false;
+        }
+    }
+
+
+    public String receiveCandidateTransaction(Transaction transaction, String proposer) {
+        if(validatorStatus == 0 && proposerStatus == 0) {
+            validatorStatus = 1;
+            candidateTransaction = transaction;
+            curProposer = proposer;
+            return "received";
+        }
+        return "denied";
+    }
+
+    public boolean checkProposer(String proposer) {
+        if(curProposer == null) {
+            curProposer = proposer;
+            return true;
+        }
+        if(curProposer.equals(proposer)) return true;
+        return false;
+    }
+
+    public String computeDBlockWithCandidateTransaction(long timestamp) {
+        if(dynamicBlock.getTimestamp() == 0) {
+            System.out.println("justify dynamic Block timestamp");
+            dynamicBlock.justifyBlockTime(timestamp);
+        }
+        validatorStatus = 2;
+        System.out.println("JSON string:" + JSON.toJSONString(candidateTransaction));
+        return dynamicBlock.getNewBlockStatus(candidateTransaction);
+    }
+
+    public String consensusDynamicBlock(Block dBlock) {
+        dynamicBlock = dBlock;
+        validatorStatus = 0;
+        candidateTransaction = null;
+        curProposer = null;
+        return "consensus";
+    }
+
+    public String rollBackDynamicBlock() {
+        validatorStatus = 0;
+        candidateTransaction = null;
+        curProposer = null;
+        return "ok";
+    }
+
+    public Block getDynamicBlock() {
+        return dynamicBlock;
+    }
+
+    public void setBlockChain(ArrayList<Block> chain) {
+        BlockChainService.chain = chain;
     }
 }
 

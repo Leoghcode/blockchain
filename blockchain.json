@@ -1,0 +1,17 @@
+[
+  {
+    "hash":"0dbe15c96684f22f7cc436f4405d039b6a1d57d64ffa18142262c3fe56efef6b",
+    "index":0,
+    "previousHash":"-1",
+    "timestamp":0,
+    "transactions":[
+      {
+        "multiSign":false,
+        "from":"node1",
+        "to":"node1",
+        "value":0,
+        "hash":"cdfc219cfe9d1f777941976e510b3ff5291880241d0d43734335df6ab7e1998e"
+      }
+    ]
+  }
+]

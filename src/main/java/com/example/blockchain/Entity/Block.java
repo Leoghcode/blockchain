@@ -1,6 +1,7 @@
 package com.example.blockchain.Entity;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.example.blockchain.service.KeyUtil;
 import java.util.List;
 
@@ -29,8 +30,18 @@ public class Block {
         this.transactions = transactions;
     }
 
+    public Block(int index, String previousHash, long timestamp, String lastTransaction, List transactions) {
+        this.index = index;
+        this.previousHash = previousHash;
+        this.timestamp = timestamp;
+        this.lastTransaction = lastTransaction;
+        this.transactions = transactions;
+        this.hash = hash();
+    }
+
     private String hash() {
-        String transStr = JSON.toJSONString(transactions);
+        String transStr = JSON.toJSONString(JSONArray.parse(JSON.toJSONString(transactions)));
+        System.out.println("block: transStr:" + transStr);
         String text = "" + index + previousHash + timestamp + lastTransaction + transStr;
         return KeyUtil.getSHA256Str(text);
     }
@@ -81,5 +92,35 @@ public class Block {
 
     public void setLastTransaction(String lastTransaction) {
         this.lastTransaction = lastTransaction;
+    }
+
+    public String getNewBlockStatus(Transaction transaction) {
+        transactions.add(transaction);
+        String newHash = hash();
+        transactions.remove(transactions.size() - 1);
+        return newHash;
+    }
+
+    public void justifyBlockTime(long timestamp) {
+        this.timestamp = timestamp;
+        this.hash = hash();
+    }
+
+    public void addNewTransaction(Transaction transaction) {
+        transactions.add(transaction);
+        lastTransaction = ((Transaction)transactions.get(transactions.size() - 1)).getHash();
+        hash = hash();
+    }
+
+    public void rollBack() {
+        if(transactions.size() == 0) {
+            return;
+        }
+        transactions.remove(transactions.size() - 1);
+        if(transactions.size() != 0) {
+            lastTransaction = ((Transaction)transactions.get(transactions.size() - 1)).getHash();
+        } else {
+            lastTransaction = null;
+        }
     }
 }

@@ -133,4 +133,15 @@ public class NodeService {
         nodeList = list;
         return list;
     }
+
+    public List<Node> getValidatorList() {
+        List<Node> validatorList = new ArrayList<>();
+        for(Node node: nodeList) {
+            if (!node.getName().contains("认证机构")) {
+                continue;
+            }
+            validatorList.add(node);
+        }
+        return validatorList;
+    }
 }

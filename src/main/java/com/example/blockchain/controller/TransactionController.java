@@ -72,8 +72,17 @@ public class TransactionController {
     @RequestMapping(value = "validateRequest", method = RequestMethod.POST)
     public HttpStatus validate(@RequestBody Request request) {
 //        Request request = JSON.parseObject(str, Request.class);
-        boolean validation_result = KeyUtil.verify(request.getFrom(), request.getFrom_message(), request.getFrom_signature())
-                & KeyUtil.verify(request.getTo(), request.getTo_message(), request.getTo_signature());
+        boolean validation_result = KeyUtil.verify(request.getFrom(), request.getFrom_message(), request.getFrom_signature());
+        if (request.getTransaction().isMultiSign())
+                validation_result &= KeyUtil.verify(request.getTo(), request.getTo_message(), request.getTo_signature());
+        else {
+            Optional<Node> from = nodeService.getNodeByPublicKey(request.getFrom());
+            if (from.isPresent()) {
+                String backUrl = "http://" + from.get().getHost() + ":" + from.get().getPort() + "/transaction/updateTransaction";
+                restTemplate.postForObject(backUrl, request, HttpStatus.class);
+            } else
+                return HttpStatus.INTERNAL_SERVER_ERROR;
+        }
         if (validation_result) {
             bcService.addTransaction(request.getTransaction());
             return HttpStatus.OK;
@@ -128,50 +137,73 @@ public class TransactionController {
     @RequestMapping(value = "send", method = RequestMethod.POST)
     public HttpStatus send(@RequestBody Map<String, Object> request) {
         List<Item> items = JSON.parseArray(JSON.toJSONString(request.get("items")), Item.class);
-        String to = request.get("to").toString();
-        String type = request.get("type").toString();
-        boolean multiSign = false;
+        boolean multiSign = true;
         if (request.containsKey("multiSign"))
             multiSign = (Boolean) request.get("multiSign");
+        String type = request.get("type").toString();
         Integer value = null;
         if (request.containsKey("value"))
             value = Integer.valueOf(request.get("value").toString());
-        if (type.equals("质检结果") && value != null && value == 1) {
-            if (keyService.isInspector()) {
-                for (Item i : items) {
-                    i.setIs_qualified(true);
+        if (multiSign) {
+            String to = request.get("to").toString();
+            if (type.equals("质检结果") && value != null && value == 1) {
+                if (keyService.isInspector()) {
+                    for (Item i : items) {
+                        i.setIs_qualified(true);
+                    }
                 }
             }
-        }
 
-        // 查找节点
-        Optional<Node> toNode = nodeService.getNodeByName(to);
-        if (toNode.isPresent()) {
-            Node node = toNode.get();
+            // 查找节点
+            Optional<Node> toNode = nodeService.getNodeByName(to);
+            if (toNode.isPresent()) {
+                Node node = toNode.get();
+                Transaction transaction;
+                if (value != null)
+                    transaction = new Transaction(keyService.getPublic_key(), node.getKey(), type,
+                            items, multiSign, value);
+                else
+                    transaction = new Transaction(keyService.getPublic_key(), node.getKey(), type,
+                            items, multiSign);
+                String message = KeyUtil.getSHA256Str(JSON.toJSONString(transaction) + System.currentTimeMillis());
+                String signature = KeyUtil.signMessage(keyService.getPrivate_key(), message);
+
+                String url = "http://" + node.getHost() + ":" + node.getPort() + "/transaction/receive";
+                Map<String, Object> sendRequest = new HashMap<>();
+                sendRequest.put("transaction", JSON.toJSONString(transaction));
+                sendRequest.put("public_key", keyService.getPublic_key());
+                sendRequest.put("message", message);
+                sendRequest.put("signature", signature);
+                // 发送请求
+                HttpStatus status = restTemplate.postForObject(url, sendRequest, HttpStatus.class);
+                if (status.equals(HttpStatus.OK))
+                    return HttpStatus.OK;
+                else
+                    return HttpStatus.INTERNAL_SERVER_ERROR;
+            } else {
+                return HttpStatus.BAD_REQUEST;
+            }
+        } else {
             Transaction transaction;
             if (value != null)
-                transaction = new Transaction(keyService.getPublic_key(), node.getKey(), type,
-                    items, multiSign, value);
+                transaction = new Transaction(keyService.getPublic_key(), "", type,
+                        items, multiSign, value);
             else
-                transaction = new Transaction(keyService.getPublic_key(), node.getKey(), type,
+                transaction = new Transaction(keyService.getPublic_key(), "", type,
                         items, multiSign);
             String message = KeyUtil.getSHA256Str(JSON.toJSONString(transaction) + System.currentTimeMillis());
             String signature = KeyUtil.signMessage(keyService.getPrivate_key(), message);
 
-            String url = "http://" + node.getHost() + ":" + node.getPort() + "/transaction/receive";
-            Map<String, Object> sendRequest = new HashMap<>();
-            sendRequest.put("transaction", JSON.toJSONString(transaction));
-            sendRequest.put("public_key", keyService.getPublic_key());
-            sendRequest.put("message", message);
-            sendRequest.put("signature", signature);
-            // 发送请求
-            HttpStatus status = restTemplate.postForObject(url, sendRequest, HttpStatus.class);
-            if (status.equals(HttpStatus.OK))
-                return HttpStatus.OK;
-            else
-                return HttpStatus.INTERNAL_SERVER_ERROR;
-        } else {
-            return HttpStatus.BAD_REQUEST;
+            Request request1 = new Request(keyService.getPublic_key(), keyService.getNodename(), message, signature,
+                    null, null, null, null, transaction);
+
+            Optional<Node> validator = nodeService.getNodeByName("认证机构");
+            if (validator.isPresent()) {
+                Node node = validator.get();
+                String url = "http://" + node.getHost() + ":" + node.getPort() + "/transaction/validateRequest";
+                return restTemplate.postForObject(url, request1, HttpStatus.class);
+            } else
+                return HttpStatus.NOT_FOUND;
         }
     }
 
