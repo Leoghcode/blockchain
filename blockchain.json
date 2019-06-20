@@ -9,7 +9,7 @@
         "multiSign":false,
         "from":"node1",
         "to":"node1",
-        "value":0,
+        "valAue":0,
         "hash":"cdfc219cfe9d1f777941976e510b3ff5291880241d0d43734335df6ab7e1998e"
       }
     ]

@@ -26,7 +26,7 @@ public class BlockChainService implements ApplicationListener<WebServerInitializ
     private KeyService keyService;
     private RestTemplate restTemplate = new RestTemplate();
 
-    private static int blockSize = 3;
+    private static int blockSize = 4;
     private static ArrayList<Transaction> transactions = new ArrayList<>();
     private static Block dynamicBlock;
     // 接收者状态 0 未接受 1 已接受 2 已计算

@@ -88,4 +88,12 @@ public class Transaction {
     public void setHash(String hash) {
         this.hash = hash;
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

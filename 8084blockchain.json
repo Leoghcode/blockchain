@@ -6,100 +6,104 @@
 		"timestamp":0,
 		"transactions":[
 			{
+				"valAue":0,
 				"multiSign":false,
 				"from":"node1",
 				"to":"node1",
-				"value":0,
 				"hash":"cdfc219cfe9d1f777941976e510b3ff5291880241d0d43734335df6ab7e1998e"
 			}
 		]
 	},
 	{
-		"hash":"7761d4f7550671e1a510bb75b7f8272f8b1734169cd2290b09c1840b477bbd78",
+		"hash":"32e3ea8bc4b5d2ce30416ea036e5f2dbb374c2e97b3731ab70d4affe47fd0c93",
 		"index":1,
-		"lastTransaction":"829672c5c691d16aff989372cedf768feb5d958002dc350cf74c1e1f600274c2",
+		"lastTransaction":"d33642ae3d0d80deca2dce9b7fdf55d7dc054d92daf4f207d199aa74cf1eb0ee",
 		"previousHash":"0dbe15c96684f22f7cc436f4405d039b6a1d57d64ffa18142262c3fe56efef6b",
-		"timestamp":1560931890230,
+		"timestamp":1560999480675,
 		"transactions":[
 			{
-				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
-				"to":"",
 				"item":[
 					{
-						"hash":"79ddf0a9ab78133613e5abbccc20ffee87c970bc8f4ac7efdcb924a64b56f9ca",
-						"name":"蒙牛牛奶",
-						"source":"内蒙古",
 						"volume":250,
-						"create_date":1560931883870,
-						"is_qualified":false,
-						"is_sold":false
+						"is_sold":false,
+						"name":"光明牛奶",
+						"source":"内蒙古",
+						"create_date":1560999463866,
+						"hash":"60f9e0887ffed3ea15a5f484d49b0e0be9bcf0ffe21aeb906291332c2212fc6d",
+						"is_qualified":false
 					}
 				],
-				"multiSign":false,
-				"hash":"efa50985295b4217d9f9f53be9c0adde7478fde46ef60269563db36a341d63e1",
-				"value":0
+				"multiSign":true,
+				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
+				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
+				"type":"质检",
+				"value":0,
+				"hash":"a8c8dd6909802d5045aa8865e87c281408a31728c51a41ce52a601e86a952c11"
 			},
 			{
-				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
-				"to":"",
 				"item":[
 					{
-						"hash":"811d5e4ed598efb04e7b8668ff5326bafe7e8b240cfffd82b229a5223499188c",
-						"name":"蒙牛牛奶",
+						"volume":250,
+						"is_sold":false,
+						"name":"光明牛奶",
 						"source":"内蒙古",
-						"volume":300,
-						"create_date":1560931918269,
-						"is_qualified":false,
-						"is_sold":false
+						"create_date":1560999463866,
+						"hash":"60f9e0887ffed3ea15a5f484d49b0e0be9bcf0ffe21aeb906291332c2212fc6d",
+						"is_qualified":true
 					}
 				],
-				"multiSign":false,
-				"hash":"fd93829502ab1575a00a8c4e44b812866bc7819a411463a5b814ba7f83aa6e5f",
-				"value":0
+				"multiSign":true,
+				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
+				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
+				"type":"质检结果",
+				"value":1,
+				"hash":"78a9fa6225ba3a2cb8fb7d0863d21129d6937902e3e5182babd353f3a889bd7b"
 			},
 			{
-				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
-				"to":"",
 				"item":[
 					{
-						"hash":"fd74daacf435f4ea77f2f3f0b8899d3489b1adbbeaa7164d7ea793c568bf5030",
-						"name":"蒙牛牛奶",
+						"volume":250,
+						"is_sold":false,
+						"name":"光明牛奶",
 						"source":"内蒙古",
-						"volume":350,
-						"create_date":1560931943095,
-						"is_qualified":false,
-						"is_sold":false
+						"create_date":1560999463866,
+						"hash":"60f9e0887ffed3ea15a5f484d49b0e0be9bcf0ffe21aeb906291332c2212fc6d",
+						"is_qualified":true
 					}
 				],
-				"multiSign":false,
-				"hash":"829672c5c691d16aff989372cedf768feb5d958002dc350cf74c1e1f600274c2",
-				"value":0
+				"multiSign":true,
+				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
+				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnoj2UZ+EOZNSDamHOFl5izPnZZc7v+PsAY2TKlDygvmqvFzZvoqXuGmwUILeAjsshDmHlQa5M3X7BcEvXoa5og==",
+				"type":"商品入库",
+				"value":0,
+				"hash":"d33642ae3d0d80deca2dce9b7fdf55d7dc054d92daf4f207d199aa74cf1eb0ee"
 			}
 		]
 	},
 	{
-		"hash":"36704359d4337f6813395accfd79dfe1179e298526361359df5f0c520d80d662",
+		"hash":"872f732af36b3bedc5f0e27120dbcdae364490eba0afb8a0cee27408047ef038",
 		"index":2,
-		"lastTransaction":"6cd0ea1a3c5d735a99d49fc3ed9330995e7de9b307f0714a98c0a92388b37f50",
-		"previousHash":"7761d4f7550671e1a510bb75b7f8272f8b1734169cd2290b09c1840b477bbd78",
-		"timestamp":1560932030442,
+		"lastTransaction":"8c0c1fedb7fcbcbb6aa53d3e3d10f42b4c9924bffe0ec011fe87547e27d23db3",
+		"previousHash":"32e3ea8bc4b5d2ce30416ea036e5f2dbb374c2e97b3731ab70d4affe47fd0c93",
+		"timestamp":1560999702439,
 		"transactions":[
 			{
 				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
 				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
 				"item":[
 					{
-						"hash":"63b2776ef157bf8b86f877e4545bd79234e9017211d939a0868064f0963df989",
+						"hash":"c00c0e4c71da3ae1d23a4694c9bdd803c65e4f8d59f883672da81c318ebe8caa",
 						"name":"光明牛奶",
 						"source":"内蒙古",
 						"volume":250,
-						"create_date":1560932012895,
+						"create_date":1560999689096,
 						"is_qualified":false,
 						"is_sold":false
 					}
 				],
+				"type":"质检",
 				"multiSign":true,
-				"hash":"6161aa3b50e59ed16e39bf078a6afdc76781e73d594a594da75424adbb7606ae",
+				"hash":"7088f25272b0bd2c2789613c9692e27d715d9907440525c64060bd8d21c32452",
 				"value":0
 			},
 			{
@@ -107,17 +111,18 @@
 				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
 				"item":[
 					{
-						"hash":"63b2776ef157bf8b86f877e4545bd79234e9017211d939a0868064f0963df989",
+						"hash":"c00c0e4c71da3ae1d23a4694c9bdd803c65e4f8d59f883672da81c318ebe8caa",
 						"name":"光明牛奶",
 						"source":"内蒙古",
 						"volume":250,
-						"create_date":1560932012895,
+						"create_date":1560999689096,
 						"is_qualified":true,
 						"is_sold":false
 					}
 				],
+				"type":"质检结果",
 				"multiSign":true,
-				"hash":"c407052fd92cc64cf74a713c98188e817e8a207e3401e1d0e5604309f6893cdd",
+				"hash":"dc0dcb80376d84f35740a005e06d4d72f7cf60a3a8f8a2bd9f4c94052b40f713",
 				"value":1
 			},
 			{
@@ -125,62 +130,65 @@
 				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnoj2UZ+EOZNSDamHOFl5izPnZZc7v+PsAY2TKlDygvmqvFzZvoqXuGmwUILeAjsshDmHlQa5M3X7BcEvXoa5og==",
 				"item":[
 					{
-						"hash":"63b2776ef157bf8b86f877e4545bd79234e9017211d939a0868064f0963df989",
+						"hash":"c00c0e4c71da3ae1d23a4694c9bdd803c65e4f8d59f883672da81c318ebe8caa",
 						"name":"光明牛奶",
 						"source":"内蒙古",
 						"volume":250,
-						"create_date":1560932012895,
+						"create_date":1560999689096,
 						"is_qualified":true,
 						"is_sold":false
 					}
 				],
+				"type":"商品入库",
 				"multiSign":true,
-				"hash":"6cd0ea1a3c5d735a99d49fc3ed9330995e7de9b307f0714a98c0a92388b37f50",
+				"hash":"c6d99ff317ee7bb9849d25a5933efd51b9bfbcb32fb87252da22ee5c3fc4ed8f",
+				"value":0
+			},
+			{
+				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnoj2UZ+EOZNSDamHOFl5izPnZZc7v+PsAY2TKlDygvmqvFzZvoqXuGmwUILeAjsshDmHlQa5M3X7BcEvXoa5og==",
+				"to":"",
+				"item":[
+					{
+						"hash":"c00c0e4c71da3ae1d23a4694c9bdd803c65e4f8d59f883672da81c318ebe8caa",
+						"name":"光明牛奶",
+						"source":"内蒙古",
+						"volume":250,
+						"create_date":1560999689096,
+						"is_qualified":true,
+						"is_sold":false
+					}
+				],
+				"type":"售出",
+				"multiSign":false,
+				"hash":"8c0c1fedb7fcbcbb6aa53d3e3d10f42b4c9924bffe0ec011fe87547e27d23db3",
 				"value":0
 			}
 		]
 	},
 	{
-		"hash":"fd62f9d90e5a4410df14858c693e9bd5cbd548cd76eb6897147a3ca987e10447",
+		"hash":"5c685c06aa490f6af121da49ffe5151ff8987b9ea3b2c6bb85dcaed002cca05f",
 		"index":3,
-		"lastTransaction":"6d10ddce47c05c67949266c1862f062081b5b8dbdd637caa88648702688bb4d8",
-		"previousHash":"36704359d4337f6813395accfd79dfe1179e298526361359df5f0c520d80d662",
-		"timestamp":1560932118458,
+		"lastTransaction":"05fb623ba112e23c5eeb32ed87c0746d0398a4bbf56b11435e20936dde56aaf5",
+		"previousHash":"872f732af36b3bedc5f0e27120dbcdae364490eba0afb8a0cee27408047ef038",
+		"timestamp":1561000283083,
 		"transactions":[
-			{
-				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnoj2UZ+EOZNSDamHOFl5izPnZZc7v+PsAY2TKlDygvmqvFzZvoqXuGmwUILeAjsshDmHlQa5M3X7BcEvXoa5og==",
-				"to":"",
-				"item":[
-					{
-						"hash":"63b2776ef157bf8b86f877e4545bd79234e9017211d939a0868064f0963df989",
-						"name":"光明牛奶",
-						"source":"内蒙古",
-						"volume":250,
-						"create_date":1560932012895,
-						"is_qualified":true,
-						"is_sold":false
-					}
-				],
-				"multiSign":false,
-				"hash":"7e99496a1e4333e8a273afa1df9a058f3b831cd17adc49f2ab5a5ea50cb89234",
-				"value":0
-			},
 			{
 				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
 				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
 				"item":[
 					{
-						"hash":"76e5214aac3a2e0cd881ce3a2e5e1af72b0ff89d4790f0282f969ad325a9c5a1",
-						"name":"伊利牛奶",
+						"hash":"2deee2bcc5b12c4c4c88a1ad34cc7a39a8c3d0c546613414c600a23a65fb7c4d",
+						"name":"蒙牛牛奶",
 						"source":"内蒙古",
-						"volume":250,
-						"create_date":1560932151499,
+						"volume":450,
+						"create_date":1561000114103,
 						"is_qualified":false,
 						"is_sold":false
 					}
 				],
+				"type":"质检",
 				"multiSign":true,
-				"hash":"299db343059f62f152861343cb3641e8727b89a84bd6ce369a0473c2bd97300d",
+				"hash":"9edbbb5f55657c9d06f572425482e5ef12c0fa461abb6e77ac1e6eedad05ca4c",
 				"value":0
 			},
 			{
@@ -188,44 +196,103 @@
 				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
 				"item":[
 					{
-						"hash":"76e5214aac3a2e0cd881ce3a2e5e1af72b0ff89d4790f0282f969ad325a9c5a1",
-						"name":"伊利牛奶",
+						"hash":"2deee2bcc5b12c4c4c88a1ad34cc7a39a8c3d0c546613414c600a23a65fb7c4d",
+						"name":"蒙牛牛奶",
 						"source":"内蒙古",
-						"volume":250,
-						"create_date":1560932151499,
+						"volume":450,
+						"create_date":1561000114103,
 						"is_qualified":true,
 						"is_sold":false
 					}
 				],
+				"type":"质检结果",
 				"multiSign":true,
-				"hash":"6d10ddce47c05c67949266c1862f062081b5b8dbdd637caa88648702688bb4d8",
+				"hash":"db76d6d98d9364146ce2bac58bb2ca874bcb5888c2f4b5d7b40deebed51eb6ab",
 				"value":1
-			}
-		]
-	},
-	{
-		"hash":"698168f4ccfaa6988db1779d53dced944b0b35f9ba878a82ec95a1620496739a",
-		"index":4,
-		"lastTransaction":"6c286204c33a1152db60cb99127049f3c7ea3d61d083b30dea274fb40adade58",
-		"previousHash":"fd62f9d90e5a4410df14858c693e9bd5cbd548cd76eb6897147a3ca987e10447",
-		"timestamp":1560932313894,
-		"transactions":[
+			},
 			{
 				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
 				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnoj2UZ+EOZNSDamHOFl5izPnZZc7v+PsAY2TKlDygvmqvFzZvoqXuGmwUILeAjsshDmHlQa5M3X7BcEvXoa5og==",
 				"item":[
 					{
-						"hash":"76e5214aac3a2e0cd881ce3a2e5e1af72b0ff89d4790f0282f969ad325a9c5a1",
-						"name":"伊利牛奶",
+						"hash":"2deee2bcc5b12c4c4c88a1ad34cc7a39a8c3d0c546613414c600a23a65fb7c4d",
+						"name":"蒙牛牛奶",
 						"source":"内蒙古",
-						"volume":250,
-						"create_date":1560932151499,
+						"volume":450,
+						"create_date":1561000114103,
 						"is_qualified":true,
 						"is_sold":false
 					}
 				],
+				"type":"商品入库",
 				"multiSign":true,
-				"hash":"e39269fea2ac87e1b7eaa0d67f9510eb5f9be239c1abb6bbb8f99ee07646279c",
+				"hash":"369a38c09046a03cddb5609609960904bc1a46564d95e68fa99b150c14fa8168",
+				"value":0
+			},
+			{
+				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
+				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
+				"item":[
+					{
+						"hash":"2b4b57751adda099e67dca13d4e24afed052f7d8d9f0e646532a1ccf6ee4a209",
+						"name":"蒙牛牛奶",
+						"source":"内蒙古",
+						"volume":340,
+						"create_date":1561000578490,
+						"is_qualified":false,
+						"is_sold":false
+					}
+				],
+				"type":"质检",
+				"multiSign":true,
+				"hash":"05fb623ba112e23c5eeb32ed87c0746d0398a4bbf56b11435e20936dde56aaf5",
+				"value":0
+			}
+		]
+	},
+	{
+		"hash":"0eed0d919f2bfec3a9755eee99d531c76e0c4f25e2234dc35180b6cacee3af6c",
+		"index":4,
+		"lastTransaction":"ef84a291c75fbbf9e20408af4253bf48994187fdc1d5f0fb190deb79c2c6c9af",
+		"previousHash":"5c685c06aa490f6af121da49ffe5151ff8987b9ea3b2c6bb85dcaed002cca05f",
+		"timestamp":1561000673649,
+		"transactions":[
+			{
+				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
+				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
+				"item":[
+					{
+						"hash":"2b4b57751adda099e67dca13d4e24afed052f7d8d9f0e646532a1ccf6ee4a209",
+						"name":"蒙牛牛奶",
+						"source":"内蒙古",
+						"volume":340,
+						"create_date":1561000578490,
+						"is_qualified":true,
+						"is_sold":false
+					}
+				],
+				"type":"质检结果",
+				"multiSign":true,
+				"hash":"0d0d068100326c940c92104cccda49dd6824b19b691c19ab4847fa2aa7be8beb",
+				"value":1
+			},
+			{
+				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
+				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEnoj2UZ+EOZNSDamHOFl5izPnZZc7v+PsAY2TKlDygvmqvFzZvoqXuGmwUILeAjsshDmHlQa5M3X7BcEvXoa5og==",
+				"item":[
+					{
+						"hash":"2b4b57751adda099e67dca13d4e24afed052f7d8d9f0e646532a1ccf6ee4a209",
+						"name":"蒙牛牛奶",
+						"source":"内蒙古",
+						"volume":340,
+						"create_date":1561000578490,
+						"is_qualified":true,
+						"is_sold":false
+					}
+				],
+				"type":"商品入库",
+				"multiSign":true,
+				"hash":"0386d78fc099308dcf943c31ffc02c7e4deab37683ed19cb83e30d81dbf6af9a",
 				"value":0
 			},
 			{
@@ -233,17 +300,18 @@
 				"to":"",
 				"item":[
 					{
-						"hash":"76e5214aac3a2e0cd881ce3a2e5e1af72b0ff89d4790f0282f969ad325a9c5a1",
-						"name":"伊利牛奶",
+						"hash":"2deee2bcc5b12c4c4c88a1ad34cc7a39a8c3d0c546613414c600a23a65fb7c4d",
+						"name":"蒙牛牛奶",
 						"source":"内蒙古",
-						"volume":250,
-						"create_date":1560932151499,
+						"volume":450,
+						"create_date":1561000114103,
 						"is_qualified":true,
 						"is_sold":false
 					}
 				],
+				"type":"售出",
 				"multiSign":false,
-				"hash":"33955936954bf612efdb92c91f2f314096fa991e01a9470abae3d3fa220a0ba9",
+				"hash":"6d6f090655e4e1dea20efc2804315613a3f254c16abb10924e7dc4ddc3290a89",
 				"value":0
 			},
 			{
@@ -251,81 +319,19 @@
 				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
 				"item":[
 					{
-						"hash":"f08a156a864e1e89d1103436e7d396107a413e461ec77a010b130c1ea9c8c32c",
+						"hash":"71450449459eb5d785177bc61c0cb774e84b3d5949e90f2c2ab24c919f088561",
 						"name":"蒙牛牛奶",
 						"source":"内蒙古",
-						"volume":400,
-						"create_date":1560932349833,
+						"volume":340,
+						"create_date":1561000807296,
 						"is_qualified":false,
 						"is_sold":false
 					}
 				],
+				"type":"质检",
 				"multiSign":true,
-				"hash":"6c286204c33a1152db60cb99127049f3c7ea3d61d083b30dea274fb40adade58",
+				"hash":"ef84a291c75fbbf9e20408af4253bf48994187fdc1d5f0fb190deb79c2c6c9af",
 				"value":0
-			}
-		]
-	},
-	{
-		"hash":"c20d533113a8c67d3efc8b27a4694b58e9d365a0a34bfe2e15b21df0b9c84729",
-		"index":5,
-		"lastTransaction":"5905d56de8d1ec13bf2128c532888516515897463e7350d65a94a8658f21517e",
-		"previousHash":"698168f4ccfaa6988db1779d53dced944b0b35f9ba878a82ec95a1620496739a",
-		"timestamp":1560932486017,
-		"transactions":[
-			{
-				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
-				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
-				"item":[
-					{
-						"hash":"c95a2e26869453b89c81744fcb82a025239c8d1e7505b60b04f7c8f5d073c853",
-						"name":"蒙牛牛奶",
-						"source":"内蒙古",
-						"volume":500,
-						"create_date":1560932470918,
-						"is_qualified":false,
-						"is_sold":false
-					}
-				],
-				"multiSign":true,
-				"hash":"817353c05c1e82bff4f766e758225bbe10ff0fd9238ef995a6cc6155dd91d45e",
-				"value":0
-			},
-			{
-				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
-				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
-				"item":[
-					{
-						"hash":"f08a156a864e1e89d1103436e7d396107a413e461ec77a010b130c1ea9c8c32c",
-						"name":"蒙牛牛奶",
-						"source":"内蒙古",
-						"volume":400,
-						"create_date":1560932349833,
-						"is_qualified":true,
-						"is_sold":false
-					}
-				],
-				"multiSign":true,
-				"hash":"e313185fff0e19e739bae5fc8bfabe882522c2de0840114434f81e173c54f275",
-				"value":1
-			},
-			{
-				"from":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEachaM4hVzq+ClOQ72cOlQFqp3JpCiAE0ptnsojzmzKe7czFb2wbs8Ml7lDJE8747KwGFYBb2MNDQoAaX3bRjsw==",
-				"to":"MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEoQ6rG0FWtan+8th1x/maNLw3nSQRThmuXkoMINwuvVU0CGLRHtIRWFM/iEU1ZgrK1ndobAGmG8E8CFZjQ4ogQQ==",
-				"item":[
-					{
-						"hash":"c95a2e26869453b89c81744fcb82a025239c8d1e7505b60b04f7c8f5d073c853",
-						"name":"蒙牛牛奶",
-						"source":"内蒙古",
-						"volume":500,
-						"create_date":1560932470918,
-						"is_qualified":true,
-						"is_sold":false
-					}
-				],
-				"multiSign":true,
-				"hash":"5905d56de8d1ec13bf2128c532888516515897463e7350d65a94a8658f21517e",
-				"value":1
 			}
 		]
 	}
